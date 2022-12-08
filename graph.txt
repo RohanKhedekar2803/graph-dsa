@@ -1,0 +1,102 @@
+bfs: take q insert first node in q while(!q.empty()) pop from q(insert in ans) traverse its all neihgghbourput in q if not visied   
+vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        vector<int> ans;
+        vector<int>visited(V+1,0);
+         for(int i=0;i<V;i++){
+             if(visited[i]==0){
+
+                queue<int>q;
+                q.push(i);
+                visited[i]=1;
+                while(!q.empty()){ //take one node
+                    int t=q.front();
+                    q.pop();
+                    ans.push_back(t); //pit node in ans
+                    for(auto it : adj[t]){
+                        if(visited[it]==0){//if not visited
+                            q.push(it);//put neighbour in q
+                            visited[it]=1;//mark visited
+                        }
+                        
+                    }
+                }
+             }
+         }
+        return ans;
+
+
+// detect cycle using bfs:  keep tack of parent and if anytime we visit a node which is already visited and that not parent its cycle tc:o(n+2e) space:o(n)
+bool help(int src,vector<int> adj[],vector<int>& visited){
+       visited[src]=1;
+       queue<pair<int,int>>q;
+       q.push({src,-1});
+       while(!q.empty()){
+           int parent=q.front().second;
+           int current=q.front().first;
+           q.pop();
+            
+           for(auto adjnode : adj[current]){
+              
+               if(visited[adjnode]==0){
+                   visited[adjnode]=1;
+                    q.push(make_pair(adjnode,current));
+               }else if(parent!=adjnode){
+                   return true;
+               }
+           }
+       }
+       return false;
+   }
+    bool isCycle(int V, vector<int> adj[]) {
+        vector <int> visited(V,0);
+        for(int i=0;i<V;i++){
+            if(visited[i]==0 ){
+                if(help(i,adj,visited))return true;
+            }
+        }
+        return false;
+    }
+
+//distinct islnad put all island in set and return size of set (for puting in set  substract x,y coordinate of each from base)
+
+class Solution {
+    private:
+    void dfs(int row , int col , vector<vector<int>>& vis , vector<vector<int>>& grid , vector<pair<int,int>>& vec,int row0,int col0){
+        vis[row][col] = 1;
+        vec.push_back({row-row0,col-col0});
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        int drow[] = {-1,0,+1,0};
+        int dcol[] = {0,+1,0,-1};
+      
+        for(int i = 0;i<4;i++){
+            int nrow =  row + drow[i];
+            int ncol = col + dcol[i];
+            
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && !vis[nrow][ncol] && grid[nrow][ncol] == 1 ){
+                dfs(nrow,ncol,vis,grid,vec,row0,col0);
+            }
+        }
+    }
+  public:
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        set<vector<pair<int,int>>> st;
+
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(!vis[i][j] && grid[i][j]==1){
+                    vector<pair<int,int>> vec;
+                    dfs(i,j,vis,grid,vec,i,j);
+                    st.insert(vec);
+                }
+            }
+        }
+        return st.size();
+    }
+};

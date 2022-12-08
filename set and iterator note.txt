@@ -1,0 +1,8 @@
+for set
+-erase(ele);
+-st.count(ele); retrurn 1 if ele exists
+
+auto it=begin(st); //initialize it with st begin
+
+advance(it,3); //advance it with count
+return *(it);  //return value of it
