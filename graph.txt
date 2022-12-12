@@ -26,6 +26,7 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
 
 
 // detect cycle using bfs:  keep tack of parent and if anytime we visit a node which is already visited and that not parent its cycle tc:o(n+2e) space:o(n)
+
 bool help(int src,vector<int> adj[],vector<int>& visited){
        visited[src]=1;
        queue<pair<int,int>>q;
@@ -56,6 +57,8 @@ bool help(int src,vector<int> adj[],vector<int>& visited){
         }
         return false;
     }
+
+//detect cycle using dfs:traverse dfs and carry parent at any time if you find node which is already vidited and its not parent then iits cycle
 
 //distinct islnad put all island in set and return size of set (for puting in set  substract x,y coordinate of each from base)
 
@@ -100,3 +103,114 @@ class Solution {
         return st.size();
     }
 };
+
+//check bipertite: if u can color graph with only 2 color with no neighbour of same color
+
+bool bfs(int i,vector<int>adj[],vector<int>& color){
+        color[i]=0;
+        queue<int>q;
+        q.push(i);
+        
+        while(!q.empty()){
+            int curr=q.front();q.pop();
+            for(auto adjcent : adj[curr]){
+                if(color[adjcent]==-1){
+                  color[adjcent]=!color[curr];
+                  q.push(adjcent);
+                }else{ //already colored
+                    if(color[adjcent]==color[curr])return false;
+                }
+            }
+        }
+        return true;
+    }
+    bool dfs(int i,vector<int>adj[],vector<int>& color,int col,bool ans){
+        if(ans==false)return false;
+        color[i]=col;
+        for(auto it :adj[i]){
+            if(color[it]==-1){
+                color[it]=!col;
+               if(dfs(it,adj,color,!col,ans)==false)return false;
+            }    
+            else{
+                if(color[it]==col)return false;
+            }
+        }
+        return true;
+    }
+	bool isBipartite(int V, vector<int>adj[]){
+	    vector<int>color(V,-1);
+	    bool ans=true;
+	    for(int i=0;i<V;i++){
+	        if(color[i]==-1
+){
+	            if(dfs(i,adj,color,0,ans)==false)return false;
+	        }
+	    }     
+	    return true;
+	}
+//topological sort 
+dfs:take dfs and stack while returning from dfs store in stack that stack is topo sort
+
+class Solution
+{
+	public:
+	bool dfs(int i,vector<int>& visited,stack<int>& st,vector<int> adj[]){
+	    visited[i]=1;
+	    for(auto it:adj[i]){
+	        if(visited[it]==0)dfs(it,visited,st,adj);
+	    }
+	    st.push(i);
+	}
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    stack<int>st;
+	    vector<int>visited(V,0);
+	    for(int i=0;i<V;i++){
+	        if(visited[i]==0)dfs(i,visited,st,adj);
+	    }
+	    vector<int> ans;
+	    while(!st.empty()){
+	        int i=st.top();
+	        st.pop();
+	        ans.push_back(i);
+	    }
+	    return ans;
+	}
+};
+
+bfs topo/index bases /kahns algo:store indegree of all put inderee 0 in q while queue not empty take 1 ele from q reomve and store in answer and remove income edge from that and if after removing it becomes 0 then add in q
+
+detecxt cycle using bfs: modify toposrot as we know topo sort is only on dag so apply topo sort if at end topo sort size is not equal to toal node then cycle
+
+pre-requisits:
+bool isPossible(int num, vector<pair<int, int> >& prerequisites) {
+	    vector<int>indegree(num,0);
+        vector<int>adj[num];
+        for(auto it:prerequisites){
+            adj[it.second].push_back(it.first);
+        }
+
+        for(int i=0;i<num;i++){
+            for(auto it:adj[i]){
+                indegree[it]++;
+            }
+        }
+        
+        queue<int>q;
+        vector<int>ans;
+        for(int i=0;i<num;i++){
+            if(indegree[i]==0)q.push(i);
+        }
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            ans.push_back(node);
+            for(auto it:adj[node]){
+                indegree[it]--;
+                if(indegree[it]==0)q.push(it);
+            }
+            
+        }
+        return ans.size()==num;
+	}
