@@ -1,3 +1,13 @@
+bfs
+dfs
+detect cycle in undirected: keep traack of parent and all visited if a node we are trying to visit is alread visited and its not parent return false;
+detect cycle in dereted graph : dfs
+
+
+
+
+
+
 bfs: take q insert first node in q while(!q.empty()) pop from q(insert in ans) traverse its all neihgghbourput in q if not visied   
 vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         vector<int> ans;
@@ -24,6 +34,38 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
          }
         return ans;
 
+
+//cycle in directed graph:-visited and path visited is maintained while returning back from dfs call make path vivited[i]=0
+//while dfs traversal if node not visited do dfs call if its visited and pathvisited as well then return true(as its already traacked) else return false;
+  public:
+  
+    bool dfs(int i, vector<int> adj[],vector<int>& vis,vector<int>& pathvis){
+        vis[i]=1;
+        pathvis[i]=1;
+        for(auto it : adj[i]){
+            if(vis[it]==0){
+              if(dfs(it,adj,vis,pathvis)==true)return true;
+            }
+            else if(pathvis[it]==1){//already path visited
+                return true;
+            }
+            
+        }
+        pathvis[i]=0;
+        return false;
+    }    
+    bool isCyclic(int V, vector<int> adj[]) {
+        vector<int>vis(V,0);
+        vector<int>pathvis(V,0);
+         for(int i=0;i<V;i++){
+            if(vis[i]==0){
+                if(dfs(i,adj,vis,pathvis)==true)return true;
+            }
+        }
+        
+       
+        return false;
+    }
 
 // detect cycle in undirected using bfs:  keep tack of parent and if anytime we visit a node which is already visited and that not parent its cycle tc:o(n+2e) space:o(n)
 
