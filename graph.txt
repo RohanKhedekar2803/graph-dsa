@@ -25,7 +25,7 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         return ans;
 
 
-// detect cycle using bfs:  keep tack of parent and if anytime we visit a node which is already visited and that not parent its cycle tc:o(n+2e) space:o(n)
+// detect cycle in undirected using bfs:  keep tack of parent and if anytime we visit a node which is already visited and that not parent its cycle tc:o(n+2e) space:o(n)
 
 bool help(int src,vector<int> adj[],vector<int>& visited){
        visited[src]=1;
@@ -58,7 +58,7 @@ bool help(int src,vector<int> adj[],vector<int>& visited){
         return false;
     }
 
-//detect cycle using dfs:traverse dfs and carry parent at any time if you find node which is already vidited and its not parent then iits cycle
+//detect cycle in undirected using dfs:traverse dfs and carry parent at any time if you find node which is already vidited and its not parent then iits cycle
 
 //distinct islnad put all island in set and return size of set (for puting in set  substract x,y coordinate of each from base)
 
