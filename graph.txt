@@ -3,7 +3,7 @@ dfs
 detect cycle in undirected: keep traack of parent and all visited if a node we are trying to visit is alread visited and its not parent return false;
 detect cycle in dereted graph : 
  dfs:kee track of visited and pathvisited while travesing make visited=1 while returning back after all elements in same root return false and if get vis=1 and   pathvis=1 return true
- bfs: use indgree kahns algo
+ bfs: use indgree kahns algo (wont work on graph with multiple components)
 
 
 
