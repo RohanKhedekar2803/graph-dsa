@@ -4,6 +4,10 @@ detect cycle in undirected: keep traack of parent and all visited if a node we a
 detect cycle in dereted graph : 
  dfs:kee track of visited and pathvisited while travesing make visited=1 while returning back after all elements in same root return false and if get vis=1 and   pathvis=1 return true
  bfs: use indgree kahns algo (wont work on graph with multiple components)
+ 
+ toposort:
+  bfs:usinfg kahns algo
+  dfs:store in stack while returning from rec call
 
 
 
